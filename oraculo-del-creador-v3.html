@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Oráculo del Creador</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #050408;
+    --negro2: #0d0a14;
+    --dorado: #c9a84c;
+    --dorado-claro: #e8c97a;
+    --dorado-opaco: #7a6230;
+    --purpura: #2a0a4a;
+    --purpura-medio: #4a1a7a;
+    --purpura-claro: #8b4fc8;
+    --purpura-brillo: #b06ee8;
+    --texto: #e8dfc8;
+    --texto-opaco: #a89880;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--negro); color:var(--texto); font-family:'Cormorant Garamond',serif; min-height:100vh; overflow-x:hidden; }
+
+  /* ── COSMOS ── */
+  .cosmos { position:fixed; inset:0; z-index:0;
+    background:radial-gradient(ellipse at 20% 20%,#1a0535 0%,transparent 50%),
+               radial-gradient(ellipse at 80% 80%,#0d0225 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,#080112 0%,#050408 100%); }
+  .cosmos::before { content:''; position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 15% 25%,rgba(201,168,76,.6) 0%,transparent 100%),
+      radial-gradient(1px 1px at 85% 15%,rgba(201,168,76,.4) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 60%,rgba(255,255,255,.5) 0%,transparent 100%),
+      radial-gradient(1px 1px at 70% 40%,rgba(255,255,255,.3) 0%,transparent 100%),
+      radial-gradient(1px 1px at 30% 75%,rgba(201,168,76,.5) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 10% 50%,rgba(255,255,255,.6) 0%,transparent 100%),
+      radial-gradient(1px 1px at 25% 90%,rgba(201,168,76,.4) 0%,transparent 100%);
+    animation:parpadeo 6s ease-in-out infinite alternate; }
+  .cosmos::after { content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 0%,rgba(74,26,122,.3) 0%,transparent 60%);
+    animation:pulso-cosmos 8s ease-in-out infinite; }
+  @keyframes parpadeo{0%{opacity:.6}100%{opacity:1}}
+  @keyframes pulso-cosmos{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+
+  .particula{position:fixed;width:2px;height:2px;background:var(--dorado);border-radius:50%;pointer-events:none;z-index:1;animation:flotar linear infinite;opacity:0;}
+  @keyframes flotar{0%{transform:translateY(100vh);opacity:0}10%{opacity:.8}90%{opacity:.4}100%{transform:translateY(-10vh) translateX(30px);opacity:0}}
+
+  .contenedor{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:0 24px;}
+
+  /* ── HEADER ── */
+  header{text-align:center;padding:60px 0 20px;animation:aparecer 1.5s ease forwards;}
+  .simbolo-corona{font-size:2.5rem;color:var(--dorado);display:inline-block;margin-bottom:12px;animation:rotar-lento 20s linear infinite;text-shadow:0 0 30px rgba(201,168,76,.6);}
+  .titulo-principal{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,5vw,2.8rem);font-weight:900;line-height:1.1;
+    background:linear-gradient(135deg,var(--dorado-claro) 0%,var(--dorado) 40%,#fff8e0 60%,var(--dorado) 80%,var(--dorado-claro) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    filter:drop-shadow(0 0 20px rgba(201,168,76,.4));margin-bottom:8px;}
+  .subtitulo{font-family:'Cinzel',serif;font-size:clamp(.75rem,2vw,.9rem);color:var(--dorado-opaco);letter-spacing:.3em;text-transform:uppercase;margin-bottom:20px;}
+  .linea-dorada{width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--dorado),transparent);margin:0 auto 16px;}
+  .intro-texto{font-size:1.1rem;font-style:italic;color:var(--texto-opaco);max-width:500px;margin:0 auto;line-height:1.7;}
+  @keyframes rotar-lento{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes aparecer{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── ORBE ── */
+  .orbe-container{text-align:center;margin-bottom:32px;}
+  .orbe{width:110px;height:110px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,rgba(176,110,232,.4) 0%,rgba(74,26,122,.6) 40%,rgba(20,5,40,.9) 100%);
+    border:1px solid rgba(201,168,76,.4);
+    box-shadow:0 0 40px rgba(176,110,232,.3),0 0 80px rgba(74,26,122,.2),inset 0 0 30px rgba(176,110,232,.15);
+    display:inline-flex;align-items:center;justify-content:center;font-size:2.8rem;
+    animation:pulso-orbe 4s ease-in-out infinite;position:relative;}
+  .orbe::before{content:'';position:absolute;inset:-3px;border-radius:50%;
+    background:conic-gradient(from 0deg,transparent 0%,var(--dorado) 25%,transparent 50%,var(--purpura-claro) 75%,transparent 100%);
+    animation:girar-borde 6s linear infinite;opacity:.5;z-index:-1;}
+  @keyframes girar-borde{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes pulso-orbe{0%,100%{box-shadow:0 0 40px rgba(176,110,232,.3),0 0 80px rgba(74,26,122,.2),inset 0 0 30px rgba(176,110,232,.15)}50%{box-shadow:0 0 60px rgba(176,110,232,.5),0 0 120px rgba(74,26,122,.4),inset 0 0 50px rgba(176,110,232,.25)}}
+
+  /* ── INPUT ── */
+  .seccion-pregunta{margin:32px 0;animation:aparecer 1.5s ease .3s both;}
+  .etiqueta{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.3em;color:var(--dorado-opaco);text-transform:uppercase;text-align:center;margin-bottom:12px;display:block;}
+  .campo-pregunta{background:rgba(13,10,20,.8);border:1px solid rgba(201,168,76,.25);border-radius:4px;position:relative;overflow:hidden;transition:border-color .3s;}
+  .campo-pregunta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--dorado),transparent);opacity:0;transition:opacity .3s;}
+  .campo-pregunta:focus-within{border-color:rgba(201,168,76,.5);}
+  .campo-pregunta:focus-within::before{opacity:1;}
+  textarea{width:100%;background:transparent;border:none;outline:none;color:var(--texto);font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:1.7;padding:20px 24px;resize:none;height:110px;}
+  textarea::placeholder{color:rgba(168,152,128,.4);font-style:italic;}
+  .btn-consultar{width:100%;margin-top:16px;padding:18px 32px;
+    background:linear-gradient(135deg,rgba(42,10,74,.8) 0%,rgba(74,26,122,.6) 100%);
+    border:1px solid rgba(201,168,76,.4);border-radius:2px;color:var(--dorado-claro);
+    font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.25em;text-transform:uppercase;
+    cursor:pointer;transition:all .4s;position:relative;overflow:hidden;}
+  .btn-consultar::before{content:'';position:absolute;top:50%;left:-100%;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--dorado),transparent);transition:left .6s;}
+  .btn-consultar:hover{background:linear-gradient(135deg,rgba(74,26,122,.9) 0%,rgba(138,79,200,.4) 100%);border-color:rgba(201,168,76,.7);box-shadow:0 0 30px rgba(201,168,76,.15);transform:translateY(-1px);}
+  .btn-consultar:hover::before{left:100%;}
+  .btn-consultar:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+  /* ══════════════════════════════════════════
+     FLIP CARD — El corazón de la experiencia
+  ══════════════════════════════════════════ */
+  .flip-scene {
+    display:none;
+    perspective: 1200px;
+    width: 280px;
+    height: 420px;
+    margin: 40px auto;
+    cursor: pointer;
+  }
+  .flip-scene.visible { display:block; animation:aparecer .6s ease forwards; }
+
+  .flip-card {
+    width:100%; height:100%;
+    position:relative;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+    border-radius: 12px;
+  }
+  .flip-card.flipped { transform: rotateY(180deg); }
+
+  /* REVERSO — lo que se ve antes de voltear */
+  .flip-back, .flip-front {
+    position:absolute; inset:0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .flip-back {
+    background: linear-gradient(135deg, #1a0835 0%, #0d0a14 50%, #2a0a4a 100%);
+    border: 1px solid rgba(201,168,76,.35);
+    display: flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    box-shadow: 0 0 60px rgba(74,26,122,.4), 0 0 120px rgba(42,10,74,.3);
+  }
+  .flip-back::before {
+    content:'';position:absolute;inset:8px;
+    border:1px solid rgba(201,168,76,.15);border-radius:8px;
+  }
+  .flip-back::after {
+    content:'';position:absolute;inset:0;
+    background: repeating-linear-gradient(
+      45deg,transparent,transparent 20px,
+      rgba(201,168,76,.02) 20px,rgba(201,168,76,.02) 40px
+    );
+  }
+  .reverso-simbolo {
+    font-size:4rem;color:var(--dorado);
+    text-shadow:0 0 40px rgba(201,168,76,.6);
+    animation:pulso-orbe 4s ease-in-out infinite;
+    position:relative;z-index:1;margin-bottom:16px;
+  }
+  .reverso-texto {
+    font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
+    color:rgba(201,168,76,.5);text-transform:uppercase;
+    position:relative;z-index:1;
+  }
+  .reverso-hint {
+    position:absolute;bottom:20px;
+    font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+    color:rgba(201,168,76,.3);text-transform:uppercase;
+    animation:parpadeo 2s ease-in-out infinite;
+  }
+
+  /* FRENTE — la imagen de la carta */
+  .flip-front {
+    transform: rotateY(180deg);
+    background: #050408;
+    border: 1px solid rgba(201,168,76,.3);
+    box-shadow: 0 0 80px rgba(201,168,76,.2), 0 0 160px rgba(74,26,122,.3);
+  }
+  .flip-front img {
+    width:100%; height:100%;
+    object-fit:cover;
+    border-radius:11px;
+    display:block;
+  }
+  /* Overlay dorado sutil sobre la imagen */
+  .flip-front::after {
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(to bottom,transparent 60%,rgba(5,4,8,.7) 100%);
+    border-radius:11px;pointer-events:none;
+  }
+  /* Nombre de la carta sobre la imagen */
+  .flip-front-nombre {
+    position:absolute;bottom:0;left:0;right:0;
+    padding:16px 12px 14px;
+    text-align:center;z-index:2;
+  }
+  .flip-front-nombre span {
+    font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.25em;
+    color:var(--dorado-claro);text-transform:uppercase;
+    text-shadow:0 0 20px rgba(201,168,76,.8);
+  }
+
+  /* Hint de voltear */
+  .flip-hint {
+    text-align:center;margin-top:12px;
+    font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.25em;
+    color:rgba(201,168,76,.4);text-transform:uppercase;
+    animation:parpadeo 2s ease-in-out infinite;
+  }
+
+  /* ── CARTA INFO (aparece después del flip) ── */
+  .carta-container{display:none;margin:8px 0 32px;animation:aparecer .8s ease .3s both;}
+  .carta-container.visible{display:block;}
+
+  .carta-box{background:linear-gradient(135deg,rgba(20,8,40,.97) 0%,rgba(13,10,20,.99) 100%);border:1px solid rgba(201,168,76,.2);border-radius:4px;overflow:hidden;position:relative;}
+  .carta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--dorado) 30%,var(--purpura-brillo) 70%,transparent 100%);}
+
+  .carta-header{padding:24px 32px 18px;border-bottom:1px solid rgba(201,168,76,.08);display:flex;align-items:center;gap:16px;}
+  .carta-numero{font-family:'Cinzel',serif;font-size:.68rem;color:var(--dorado-opaco);letter-spacing:.2em;min-width:28px;}
+  .carta-info{flex:1;}
+  .carta-bloque{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.3em;color:var(--purpura-brillo);text-transform:uppercase;margin-bottom:4px;}
+  .carta-nombre{font-family:'Cinzel Decorative',serif;font-size:clamp(1rem,3vw,1.4rem);color:var(--dorado-claro);font-weight:700;margin-bottom:4px;}
+  .carta-keywords{font-size:.88rem;color:var(--texto-opaco);font-style:italic;}
+  .carta-simbolo{font-size:2.2rem;opacity:.65;}
+
+  .carta-frase{padding:20px 32px;background:rgba(42,10,74,.2);border-bottom:1px solid rgba(201,168,76,.06);text-align:center;}
+  .carta-frase p{font-size:1.2rem;font-style:italic;color:var(--texto);line-height:1.7;}
+  .carta-frase p::before,.carta-frase p::after{content:'"';color:var(--dorado);font-size:1.4rem;line-height:0;vertical-align:-.2em;}
+
+  .carta-interpretacion{padding:24px 32px;border-bottom:1px solid rgba(201,168,76,.06);}
+  .interpretacion-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;color:var(--dorado-opaco);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .interpretacion-label::before,.interpretacion-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2));}
+  .interpretacion-label::after{background:linear-gradient(90deg,rgba(201,168,76,.2),transparent);}
+  .interpretacion-texto{font-size:1.12rem;line-height:1.9;color:var(--texto);font-style:italic;font-weight:300;min-height:50px;}
+
+  .carta-tabs{display:flex;border-bottom:1px solid rgba(201,168,76,.08);}
+  .tab-btn{flex:1;padding:13px;background:transparent;border:none;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;color:var(--texto-opaco);}
+  .tab-btn.activo{color:var(--dorado);border-bottom:1px solid var(--dorado);}
+  .tab-btn:hover{color:var(--dorado-claro);}
+  .tab-content{display:none;padding:22px 32px;}
+  .tab-content.activo{display:block;animation:aparecer .4s ease;}
+  .tab-texto{font-size:1.02rem;line-height:1.85;color:var(--texto);}
+
+  /* ── CTA ── */
+  .cta-container{display:none;margin:24px 0 60px;animation:aparecer 1s ease .3s both;}
+  .cta-container.visible{display:block;}
+  .sep{text-align:center;margin-bottom:24px;position:relative;}
+  .sep::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.15),transparent);}
+  .sep span{background:var(--negro);padding:0 20px;font-size:1.3rem;position:relative;z-index:1;}
+
+  .cta-card{background:linear-gradient(135deg,rgba(42,10,74,.5) 0%,rgba(13,10,20,.9) 50%,rgba(42,10,74,.35) 100%);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:36px;text-align:center;position:relative;overflow:hidden;}
+  .cta-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(176,110,232,.05) 0%,transparent 70%);animation:pulso-fondo 6s ease-in-out infinite;}
+  @keyframes pulso-fondo{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+  .cta-eyebrow{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.4em;color:var(--purpura-brillo);text-transform:uppercase;margin-bottom:12px;display:block;}
+  .cta-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(1rem,3vw,1.5rem);font-weight:700;color:var(--dorado-claro);margin-bottom:12px;line-height:1.3;}
+  .cta-desc{font-size:.98rem;color:var(--texto-opaco);line-height:1.8;margin-bottom:22px;font-style:italic;max-width:440px;margin-left:auto;margin-right:auto;}
+  .beneficios{list-style:none;margin:0 auto 24px;max-width:360px;text-align:left;display:flex;flex-direction:column;gap:8px;}
+  .beneficios li{font-size:.92rem;color:var(--texto);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+  .beneficios li::before{content:'✦';color:var(--dorado);font-size:.62rem;margin-top:4px;flex-shrink:0;}
+  .precio-wrap{margin-bottom:20px;}
+  .precio-antes{font-size:.85rem;color:var(--texto-opaco);text-decoration:line-through;opacity:.5;}
+  .precio-actual{font-family:'Cinzel Decorative',serif;font-size:1.9rem;color:var(--dorado-claro);font-weight:700;display:block;line-height:1;margin:4px 0;filter:drop-shadow(0 0 10px rgba(201,168,76,.4));}
+  .precio-nota{font-size:.75rem;color:var(--texto-opaco);font-style:italic;}
+  .btn-ver-form{display:inline-block;padding:16px 40px;background:transparent;border:1px solid rgba(201,168,76,.5);border-radius:2px;color:var(--dorado);font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .4s;}
+  .btn-ver-form:hover{background:rgba(201,168,76,.08);border-color:var(--dorado);box-shadow:0 0 20px rgba(201,168,76,.15);transform:translateY(-1px);}
+
+  /* ── FORM ── */
+  .form-datos{display:none;margin-top:24px;animation:aparecer .5s ease forwards;}
+  .form-datos.visible{display:block;}
+  .form-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);margin-bottom:20px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  @media(max-width:500px){.form-grid{grid-template-columns:1fr}}
+  .input-wrap{margin-bottom:4px;}
+  .input-wrap label{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.22em;color:var(--dorado-opaco);text-transform:uppercase;display:block;margin-bottom:6px;}
+  .input-wrap input{width:100%;background:rgba(5,4,8,.8);border:1px solid rgba(201,168,76,.2);border-radius:2px;padding:11px 14px;color:var(--texto);font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:border-color .3s;}
+  .input-wrap input:focus{border-color:rgba(201,168,76,.5);}
+  .input-wrap input::placeholder{color:rgba(168,152,128,.3);font-style:italic;}
+  .btn-pagar{width:100%;margin-top:14px;padding:18px 32px;background:linear-gradient(135deg,var(--dorado-opaco) 0%,var(--dorado) 50%,var(--dorado-opaco) 100%);border:none;border-radius:2px;color:var(--negro);font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .4s;position:relative;overflow:hidden;}
+  .btn-pagar:hover{box-shadow:0 0 30px rgba(201,168,76,.4);transform:translateY(-2px);}
+  .garantia{margin-top:14px;font-size:.75rem;color:var(--texto-opaco);font-style:italic;opacity:.7;}
+
+  /* ── MODAL ── */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,4,8,.92);z-index:500;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px);}
+  .modal-overlay.visible{display:flex;animation:aparecer .3s ease forwards;}
+  .modal{background:linear-gradient(135deg,#0d0a14 0%,#150a28 100%);border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:44px 36px;max-width:460px;width:100%;text-align:center;position:relative;}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--dorado),transparent);}
+  .modal-icono{font-size:2.8rem;margin-bottom:18px;display:block;}
+  .modal-titulo{font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:var(--dorado-claro);margin-bottom:12px;}
+  .modal-nombre{font-family:'Cinzel',serif;font-size:1rem;color:var(--purpura-brillo);margin-bottom:6px;display:block;}
+  .modal-texto{font-size:.98rem;color:var(--texto-opaco);line-height:1.8;font-style:italic;margin-bottom:26px;}
+  .btn-modal{padding:12px 34px;background:transparent;border:1px solid rgba(201,168,76,.4);border-radius:2px;color:var(--dorado);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+  .btn-modal:hover{background:rgba(201,168,76,.1);border-color:var(--dorado);}
+
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(20,8,40,.95);border:1px solid rgba(201,168,76,.3);color:var(--dorado-claro);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.12em;padding:12px 24px;border-radius:2px;z-index:1000;transition:transform .4s;white-space:nowrap;}
+  .toast.visible{transform:translateX(-50%) translateY(0);}
+
+  .puntos-carga{display:flex;gap:4px;justify-content:center;margin-top:8px;}
+  .puntos-carga span{width:5px;height:5px;border-radius:50%;background:var(--dorado);animation:punto 1.4s ease-in-out infinite;}
+  .puntos-carga span:nth-child(2){animation-delay:.2s}
+  .puntos-carga span:nth-child(3){animation-delay:.4s}
+  @keyframes punto{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+  footer{text-align:center;padding:32px 0;border-top:1px solid rgba(201,168,76,.06);margin-top:20px;}
+  .footer-txt{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.28em;color:rgba(168,152,128,.22);text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<div class="cosmos"></div>
+<script>
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');p.className='particula';
+  p.style.left=Math.random()*100+'vw';
+  p.style.animationDuration=(8+Math.random()*15)+'s';
+  p.style.animationDelay=(Math.random()*15)+'s';
+  p.style.width=p.style.height=(1+Math.random()*2)+'px';
+  document.body.appendChild(p);
+}
+</script>
+
+<div class="contenedor">
+
+  <header>
+    <span class="simbolo-corona">✦</span>
+    <h1 class="titulo-principal">El Oráculo<br>del Creador</h1>
+    <p class="subtitulo">44 Arquetipos Universales · Sabiduría del Alma</p>
+    <div class="linea-dorada"></div>
+    <p class="intro-texto">Cada pregunta que nace desde el alma ya tiene su respuesta. El Creador escucha.</p>
+  </header>
+
+  <!-- PREGUNTA -->
+  <section class="seccion-pregunta">
+    <div class="orbe-container"><div class="orbe">🔮</div></div>
+    <span class="etiqueta">Formula tu consulta al Creador</span>
+    <div class="campo-pregunta">
+      <textarea id="pregunta" placeholder="¿Qué necesita escuchar tu alma en este momento?&#10;Escribe desde el corazón..." maxlength="400"></textarea>
+    </div>
+    <button class="btn-consultar" id="btnConsultar" onclick="consultarOraculo()">
+      ✦ Recibir mensaje del Creador ✦
+    </button>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FLIP CARD — Efecto voltear carta
+  ════════════════════════════════════ -->
+  <div class="flip-scene" id="flipScene" onclick="voltearCarta()">
+    <div class="flip-card" id="flipCard">
+
+      <!-- REVERSO (lo que se ve primero) -->
+      <div class="flip-back">
+        <span class="reverso-simbolo">✦</span>
+        <span class="reverso-texto">El Oráculo del Creador</span>
+        <span class="reverso-hint">Toca para revelar</span>
+      </div>
+
+      <!-- FRENTE (la imagen de la carta) -->
+      <div class="flip-front">
+        <img id="cartaImagen" src="" alt="Carta del Oráculo" />
+        <div class="flip-front-nombre">
+          <span id="cartaImagenNombre"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <p class="flip-hint" id="flipHint" style="display:none">✦ Toca la carta para revelarla ✦</p>
+
+  <!-- INFO DE LA CARTA (aparece tras el flip) -->
+  <div class="carta-container" id="cartaContainer">
+    <div class="carta-box">
+      <div class="carta-header">
+        <span class="carta-numero" id="cartaNum">01</span>
+        <div class="carta-info">
+          <div class="carta-bloque" id="cartaBloque"></div>
+          <div class="carta-nombre" id="cartaNombre"></div>
+          <div class="carta-keywords" id="cartaKeywords"></div>
+        </div>
+        <span class="carta-simbolo" id="cartaSimb"></span>
+      </div>
+      <div class="carta-frase"><p id="cartaFrase"></p></div>
+      <div class="carta-interpretacion">
+        <div class="interpretacion-label">El Creador te habla</div>
+        <div class="interpretacion-texto" id="interpretacionTexto">
+          <div style="text-align:center;color:var(--texto-opaco)">
+            Meditando tu pregunta
+            <div class="puntos-carga"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="carta-tabs" id="cartaTabs" style="display:none">
+        <button class="tab-btn activo" onclick="mostrarTab('luz',this)">☀ En la Luz</button>
+        <button class="tab-btn" onclick="mostrarTab('sombra',this)">☽ En la Sombra</button>
+      </div>
+      <div class="tab-content activo" id="tab-luz"><p class="tab-texto" id="textoLuz"></p></div>
+      <div class="tab-content" id="tab-sombra"><p class="tab-texto" id="textoSombra"></p></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-container" id="ctaContainer">
+    <div class="sep"><span>✦</span></div>
+    <div class="cta-card">
+      <span class="cta-eyebrow">El Creador tiene más para ti</span>
+      <h2 class="cta-titulo">Desbloquea tu Lectura Sagrada Completa</h2>
+      <p class="cta-desc">Tu nombre y fecha de nacimiento abren el registro de tu alma. Lo que el Creador reserva para ti va mucho más allá de lo que acabas de recibir.</p>
+      <ul class="beneficios">
+        <li>Mensaje personalizado según tu energía natal</li>
+        <li>Los bloqueos específicos que frenan tu propósito</li>
+        <li>La acción sagrada que debes tomar ahora</li>
+        <li>Afirmación codificada solo para tu alma</li>
+        <li>Tirada de 3 cartas: Pasado · Presente · Camino</li>
+      </ul>
+      <div class="precio-wrap">
+        <span class="precio-antes">$9.99 USD</span>
+        <span class="precio-actual">$4.99 USD</span>
+        <span class="precio-nota">Acceso completo · Pago único · Entrega inmediata</span>
+      </div>
+      <button class="btn-ver-form" id="btnVerForm" onclick="mostrarForm()">✦ Quiero mi lectura completa ✦</button>
+      <div class="form-datos" id="formDatos">
+        <div class="form-sep"></div>
+        <div class="form-grid">
+          <div class="input-wrap">
+            <label>Tu nombre</label>
+            <input type="text" id="inputNombre" placeholder="Nombre completo"/>
+          </div>
+          <div class="input-wrap">
+            <label>Fecha de nacimiento</label>
+            <input type="date" id="inputFecha"/>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label>Correo electrónico</label>
+          <input type="email" id="inputEmail" placeholder="para recibir tu lectura"/>
+        </div>
+        <button class="btn-pagar" onclick="procesarPago()">🔒 Desbloquear mi lectura sagrada · $4.99</button>
+        <p class="garantia">✦ Pago seguro · Si no sientes conexión, te devolvemos el dinero</p>
+      </div>
+    </div>
+  </div>
+
+  <footer><p class="footer-txt">El Oráculo del Creador · Todos los misterios reservados</p></footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
+  <div class="modal">
+    <span class="modal-icono">✨</span>
+    <h3 class="modal-titulo">El Creador te ha visto</h3>
+    <span class="modal-nombre" id="modalNombre"></span>
+    <p class="modal-texto">Tu lectura sagrada está siendo tejida en los planos superiores. En breve la recibirás en tu correo.</p>
+    <button class="btn-modal" onclick="document.getElementById('modalOverlay').classList.remove('visible')">Recibir con gratitud ✦</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// RUTAS DE IMÁGENES
+// Nomenclatura: images/cartas/carta-01.png
+// Cambia la extensión si tus archivos son .jpg
+// ══════════════════════════════════════════════════
+const IMG_BASE = 'images/cartas/';
+const IMG_EXT  = '.png'; // ← cambia a '.jpg' si necesitas
+
+function imgPath(num) {
+  return IMG_BASE + 'carta-' + String(num).padStart(2,'0') + IMG_EXT;
+}
+
+// ══════════════════════════════════════════════════
+// LAS 44 CARTAS
+// ══════════════════════════════════════════════════
+const CARTAS = [
+  { num:1,  bloque:"I · La Fuente",          nombre:"El Creador",          simbolo:"☀",  keywords:"Origen · Fuente · Poder",           frase:"Todo lo que existe nació de lo que eres.",                              luz:"Eres expresión directa de la fuerza que creó el universo. No buscas permiso porque ya eres la fuente. Lo que imaginas con claridad y fe absoluta ya comenzó a manifestarse.",                                                                         sombra:"Te has desconectado de tu origen y buscas afuera lo que solo existe adentro. El poder que admiras en otros es el mismo que niegas en ti. Regresa al silencio.",                                                              preguntas:["quién soy","poder","origen","fuerza interior","propósito","universo","dios","alma"] },
+  { num:2,  bloque:"I · La Fuente",          nombre:"El Vacío",            simbolo:"◯",  keywords:"Silencio · Potencial · Gestación",  frase:"Antes de la primera palabra, ya estabas.",                              luz:"El vacío no es ausencia — es el útero de toda creación. Estás en el espacio sagrado antes del nacimiento. No fuerces. Lo que viene ya tiene forma perfecta.",                                                                  sombra:"Huyes del silencio llenando cada momento con ruido y urgencia. Lo que más temes habitar es exactamente donde vive tu respuesta. Para. Respira. Escucha.",                                                                    preguntas:["vacío","esperar","actuar","momento","cuándo","silencio","paciencia","nada"] },
+  { num:3,  bloque:"I · La Fuente",          nombre:"La Llama",            simbolo:"🔥", keywords:"Pasión · Vitalidad · Llamado",      frase:"Apagarte no es una opción — eres fuego.",                               luz:"Hay algo en ti que no puede ser extinguido. Una pasión, un llamado, una certeza que regresa sin importar cuántas veces intentes ignorarla. Eso es tu llama. Aliméntala.",                                                        sombra:"Tu llama se consume porque calientas vidas ajenas antes que la tuya. Estás agotado porque das lo que no tienes. Primero enciéndete tú.",                                                                                     preguntas:["motivación","energía","pasión","apasiona","cansado","sin fuerza","llamado","vocación"] },
+  { num:4,  bloque:"I · La Fuente",          nombre:"La Semilla",          simbolo:"🌱", keywords:"Inicio · Potencial · Fe",           frase:"Dentro de ti ya vive lo que serás.",                                    luz:"Una semilla contiene el árbol completo antes de tocar la tierra. Tu sueño, tu proyecto, tu intención ya tiene todo lo necesario. Plántalo con fe.",                                                                             sombra:"Guardas semillas sin plantar por miedo a que no germinen. La semilla que no se siembra jamás florecerá. El riesgo de intentar es menor que el costo de no hacerlo.",                                                        preguntas:["empezar","comenzar","proyecto","idea","lanzar","tarde","listo","preparado","nuevo negocio"] },
+  { num:5,  bloque:"I · La Fuente",          nombre:"El Tiempo",           simbolo:"⌛", keywords:"Ciclos · Paciencia · Sincronía",   frase:"Lo divino no llega tarde. Llega exacto.",                               luz:"Lo que percibes como retraso es preparación. El universo no opera en tus tiempos — opera en el tiempo perfecto. Confiar en el cuándo es el acto de fe más avanzado.",                                                           sombra:"Luchas contra los tiempos del universo con la impaciencia de quien no confía. Forzar el cuándo cierra puertas que la paciencia abriría. Suelta el reloj.",                                                                  preguntas:["cuándo","tarda","espera","llegará","tiempo","pronto","demora"] },
+  { num:6,  bloque:"I · La Fuente",          nombre:"El Propósito",        simbolo:"⬡",  keywords:"Misión · Destino · Razón",          frase:"No viniste a sobrevivir. Viniste a crear.",                              luz:"Hay algo específico que solo tú puedes hacer con el modo único en que estás hecho. Alinearte con tu propósito no es un lujo — es la razón por la que estás aquí.",                                                              sombra:"Vives la vida de otros: sus sueños, sus expectativas. El Creador te pregunta hoy: ¿cuándo vas a vivir la tuya? Tu propósito ha esperado suficiente.",                                                                       preguntas:["para qué estoy","misión","destino","propósito","qué debo hacer con mi vida","camino"] },
+  { num:7,  bloque:"I · La Fuente",          nombre:"La Memoria",          simbolo:"🌀", keywords:"Registro · Karma · Patrón",        frase:"Tu alma recuerda lo que tu mente olvidó.",                              luz:"Hay sabiduría ancestral en ti que aún no has reclamado. La respuesta que buscas ya la tienes — solo necesita ser recordada.",                                                                                                  sombra:"Un patrón se repite porque aún no ha sido comprendido. Tu historia no te condena, te enseña. Observa el ciclo sin juzgarlo y encontrarás la clave.",                                                                        preguntas:["repito","mismo error","patrón","ciclo","por qué me pasa siempre","karma","pasado"] },
+  { num:8,  bloque:"II · El Ser",            nombre:"La Identidad",        simbolo:"👤", keywords:"Autenticidad · Esencia · Verdad",  frase:"La máscara protegió al niño. El adulto ya no la necesita.",             luz:"Hay una versión de ti que el mundo aún no ha visto — la más real, la más tuya. El Creador te llama a dejar caer la máscara y mostrarte tal cual eres.",                                                                         sombra:"Has usado la máscara tanto tiempo que olvidaste que hay alguien detrás. La identidad que defiendes no eres tú — es quien aprendiste a ser para sobrevivir.",                                                                 preguntas:["quién soy yo","auténtico","máscara","verdadero yo","identidad","me siento perdido"] },
+  { num:9,  bloque:"II · El Ser",            nombre:"La Sombra",           simbolo:"🌑", keywords:"Inconsciente · Integración · Espejo", frase:"Lo que niegas en ti, te controla desde las sombras.",               luz:"La sombra no es tu enemiga — es la parte de ti que más necesita ser vista. Lo que has rechazado tiene una sabiduría que el yo consciente no puede darte.",                                                                       sombra:"Proyectas en otros lo que no aceptas en ti. Todo lo que te irrita profundamente en alguien más es tu espejo. La energía que gastas juzgando es energía para sanar.",                                                        preguntas:["me irrita","me molesta","me enoja esa persona","por qué me afecta","sombra","me saboteo"] },
+  { num:10, bloque:"II · El Ser",            nombre:"El Guerrero",         simbolo:"⚔",  keywords:"Valentía · Fuerza · Límites",      frase:"No buscas el conflicto. Pero tampoco lo evades.",                       luz:"Hay una batalla que solo tú puedes librar — no desde el enojo, sino desde la claridad. El Guerrero puede decir no sin culpa y sí sin miedo.",                                                                                  sombra:"Peleas batallas que no son tuyas, o huyes de las que sí lo son. Discerne: ¿esto que defiendes es tuyo o es ego disfrazado de principios?",                                                                                  preguntas:["luchar","pelear","defenderme","límites","no puedo decir no","conflicto","valentía"] },
+  { num:11, bloque:"II · El Ser",            nombre:"El Niño Eterno",      simbolo:"✨", keywords:"Inocencia · Herida · Asombro",     frase:"Lo que heriste de niño, aún gobierna al adulto.",                       luz:"Has olvidado cómo jugar. El asombro, la curiosidad, la ligereza son accesos directos a la creatividad. El Creador te pide que recuperes esa parte de ti.",                                                                       sombra:"La herida de tu niño interior toma decisiones adultas sin que lo notes. Hay algo que necesita ser consolado, no racionalizado.",                                                                                             preguntas:["infancia","niñez","herida de niño","sanar pasado","disfruto","alegría","reacciono exagerado"] },
+  { num:12, bloque:"II · El Ser",            nombre:"El Cuerpo",           simbolo:"⬢",  keywords:"Templo · Instinto · Presencia",    frase:"Tu cuerpo habla. Llevas años sin escucharlo.",                          luz:"Tu cuerpo es el templo donde vive el Creador. Lo que sientes físicamente es información sagrada. Escucha lo que lleva tiempo diciéndote.",                                                                                     sombra:"Has abandonado tu cuerpo: lo ignoras o lo fuerzas. Vives en tu cabeza mientras él paga el precio. No puedes crear desde un templo descuidado.",                                                                             preguntas:["salud","cuerpo","síntoma","dolor","cansado","agotado","enfermedad","energía física"] },
+  { num:13, bloque:"II · El Ser",            nombre:"El Maestro",          simbolo:"👁",  keywords:"Sabiduría · Guía · Enseñanza",    frase:"El guía que buscas afuera ya vive en ti.",                              luz:"Has ganado sabiduría a través de lo vivido que otros no tienen. No necesitas tenerlo todo resuelto para guiar — solo haber caminado el trecho que ellos comienzan.",                                                            sombra:"Buscas maestros afuera para no asumir la responsabilidad de tu propio camino. La respuesta que buscas, ya la sabes.",                                                                                                        preguntas:["maestro","guía","consejo","a quién seguir","intuición","confiar en mí","mentor"] },
+  { num:14, bloque:"II · El Ser",            nombre:"La Rendición",        simbolo:"🕊",  keywords:"Confianza · Flujo · Soltar",       frase:"Soltar no es perder. Es abrir.",                                        luz:"Rendirse no es derrota — es la forma más avanzada de sabiduría. Cuando sueltas el cómo, se abren puertas que el control mantiene cerradas.",                                                                                   sombra:"Confundes la rendición con pasividad y el control con fuerza. Aferrarte a cómo deben ser las cosas cierra exactamente lo que quieres.",                                                                                     preguntas:["soltar","dejar ir","controlo todo","control","forzar","rendirse","fluir","resistencia"] },
+  { num:15, bloque:"III · Las Fuerzas",      nombre:"El Amor",             simbolo:"♡",  keywords:"Vínculo · Entrega · Unión",        frase:"El amor verdadero no ata. Libera.",                                     luz:"El amor no es un sentimiento pasajero — es un estado del ser. Cuando actúas desde el amor genuino, sin agenda, te conviertes en canal directo del Creador.",                                                                    sombra:"Confundes el amor con necesidad, control o miedo a la soledad. Lo que llamas amor podría ser apego disfrazado. Observa: ¿da o extrae?",                                                                                     preguntas:["amor","relación","pareja","enamorado","quiero a alguien","dependencia","ex","volver"] },
+  { num:16, bloque:"III · Las Fuerzas",      nombre:"El Miedo",            simbolo:"▽",  keywords:"Ilusión · Protección · Mensaje",   frase:"El miedo es información, no una sentencia.",                            luz:"El miedo tiene algo que decirte. Pregúntale qué protege. Cuando lo escuchas sin huir, pierde su poder de paralizarte y se convierte en guía.",                                                                                sombra:"El miedo gobierna tu vida disfrazado de prudencia. Examina cuántas decisiones has tomado para evitar sentirlo. ¿Qué has sacrificado en su altar?",                                                                          preguntas:["miedo","terror","pánico","asusta","no puedo avanzar","paralizado","ansiedad","y si sale mal"] },
+  { num:17, bloque:"III · Las Fuerzas",      nombre:"La Voluntad",         simbolo:"↑",  keywords:"Determinación · Intención · Poder", frase:"Elegir uno con toda el alma vale más que intentar mil a medias.",     luz:"La voluntad alineada con el propósito mueve montañas. No es fuerza bruta — es claridad absoluta sobre lo que quieres y disposición total a pagar el precio.",                                                                sombra:"Tu voluntad está dispersa. Cada vez que abandonas cuando llega la incomodidad, refuerzas que no puedes. Una sola cosa. Hasta el final.",                                                                                     preguntas:["no termino","abandono","enfoque","fuerza de voluntad","disciplina","constancia","compromiso"] },
+  { num:18, bloque:"III · Las Fuerzas",      nombre:"La Gratitud",         simbolo:"✿",  keywords:"Reconocimiento · Apertura · Abundancia", frase:"La gratitud no es cortesía. Es la frecuencia de la abundancia.",  luz:"Cuando reconoces lo que ya tienes con genuina apreciación, le indicas al universo que estás listo para más.",                                                                                                              sombra:"Vives en escasez no porque tengas poco, sino porque no ves lo que tienes. Antes de pedir más, cuéntalo todo.",                                                                                                              preguntas:["no me alcanza","quiero más","nunca suficiente","agradecido","vacío teniendo todo","apreciar"] },
+  { num:19, bloque:"III · Las Fuerzas",      nombre:"La Ira",              simbolo:"🔺", keywords:"Límites · Fuego · Transformación", frase:"La ira sagrada nace del amor a lo que merece ser protegido.",          luz:"La ira sana es la energía del límite y la dignidad. Usada con consciencia, transforma lo que el amor blando no puede.",                                                                                                    sombra:"Hay una ira vieja que no pertenece a este momento. La estás descargando en el presente sin limpiar la herida original.",                                                                                                     preguntas:["enojo","coraje","enojado","explosivo","ira","agresivo","me enojo por nada","rabia"] },
+  { num:20, bloque:"III · Las Fuerzas",      nombre:"El Duelo",            simbolo:"🌧",  keywords:"Pérdida · Proceso · Liberación",   frase:"Lo que no se llora, se carga.",                                         luz:"El duelo no es debilidad — es el precio del amor y el camino de la transformación. Sentir la pérdida completamente es lo único que eventualmente la transforma.",                                                               sombra:"Evitas el duelo manteniéndote ocupado o anestesiado. Lo no llorado se convierte en peso y distancia. Permítete sentir.",                                                                                                     preguntas:["pérdida","murió","fallecio","extraño","duelo","superar","muerte","me dejaron","ruptura"] },
+  { num:21, bloque:"III · Las Fuerzas",      nombre:"La Alegría",          simbolo:"☀",  keywords:"Celebración · Ligereza · Permiso", frase:"Merecer la alegría no requiere sufrirla primero.",                      luz:"La alegría es una frecuencia de acceso directo al Creador. No necesitas merecerla — solo permitirla. La ligereza no es superficialidad: es sabiduría.",                                                                        sombra:"Sabotas la alegría cuando llega porque algo en ti no cree merecerla. No todo lo positivo es trampa.",                                                                                                                       preguntas:["no puedo ser feliz","felicidad","disfrutar","alegría","mérito","merezco","por qué no soy feliz"] },
+  { num:22, bloque:"IV · El Camino",         nombre:"El Umbral",           simbolo:"🚪", keywords:"Transición · Cambio · Umbral",     frase:"Lo viejo ya no cabe. Lo nuevo aún no tiene forma.",                     luz:"Estás en el espacio sagrado entre quien eras y quien serás. La incomodidad no es señal de error — es la señal exacta de que estás creciendo.",                                                                                  sombra:"Llevas tiempo parado en el umbral sin cruzarlo. No cruzar también es una elección. La indecisión prolongada tiene un costo.",                                                                                                preguntas:["cambio","miedo al cambio","dar el paso","siguiente paso","transición","nuevo capítulo"] },
+  { num:23, bloque:"IV · El Camino",         nombre:"La Encrucijada",      simbolo:"✕",  keywords:"Elección · Discernimiento · Poder", frase:"No hay camino equivocado cuando actúas desde tu centro.",             luz:"Cada elección es un acto de poder. El Creador no te pide el camino perfecto — te pide que elijas desde tu verdad, no desde el miedo.",                                                                                       sombra:"Buscas señal externa para no asumir la responsabilidad de elegir. La respuesta ya la tienes. Confía.",                                                                                                                      preguntas:["no sé qué elegir","decisión","qué camino","me arrepentiré","elijo","dilema","decidir"] },
+  { num:24, bloque:"IV · El Camino",         nombre:"El Desierto",         simbolo:"∿",  keywords:"Prueba · Fortaleza · Claridad",    frase:"La aridez del camino revela lo esencial.",                              luz:"El desierto purifica. En la sequía se revela lo que realmente eres cuando no tienes todo a tu favor. Lo que sobrevive es genuinamente tuyo.",                                                                                  sombra:"Interpretas la sequía como abandono divino. El Creador no te dejó en el desierto para perderte — te llevó ahí para mostrarte de qué estás hecho.",                                                                          preguntas:["todo difícil","nada funciona","prueba","abandonado","solo","dios me abandonó","cuándo termina"] },
+  { num:25, bloque:"IV · El Camino",         nombre:"El Caos",             simbolo:"⁕",  keywords:"Disrupción · Renovación · Reorganización", frase:"El caos es el estado previo a un orden más elevado.",         luz:"No intentes controlar lo que está en movimiento — fluye con ello. La reconfiguración que vives es necesaria.",                                                                                                              sombra:"Creas caos inconscientemente para no enfrentar lo que requiere compromiso. La autosabotaje llega disfrazada de mala suerte.",                                                                                                preguntas:["todo se derrumba","caos","desorden","crisis","inestable","colapso","fuera de control"] },
+  { num:26, bloque:"IV · El Camino",         nombre:"El Refugio",          simbolo:"⌂",  keywords:"Pausa · Restauración · Santuario", frase:"Descansar no es abandonar. Es recargar para volver entero.",          luz:"El descanso sagrado no es rendirse — es saber que un vaso vacío no puede verter. Date permiso de parar sin culpa.",                                                                                                         sombra:"Has convertido el refugio en escondite. Distingue el reposo que restaura del que solo pospone lo inevitable.",                                                                                                              preguntas:["parar","descansar","pedir ayuda","recuperar energía","burnout","seguir o parar"] },
+  { num:27, bloque:"IV · El Camino",         nombre:"El Retorno",          simbolo:"↺",  keywords:"Integración · Ciclo · Transformación", frase:"Regresas, pero no eres el mismo que partió.",                      luz:"Has completado un ciclo y regresas transformado. Lo que encuentras al volver no es lo mismo que dejaste — porque tú ya no eres el mismo.",                                                                                    sombra:"Regresas a patrones del pasado creyendo que esta vez será diferente sin haber cambiado lo fundamental.",                                                                                                                    preguntas:["volver","regresar","volver con mi ex","volver al trabajo","pasado","retomar"] },
+  { num:28, bloque:"V · Los Vínculos",       nombre:"El Encuentro",        simbolo:"⊕",  keywords:"Conexión · Reconocimiento · Sincronía", frase:"No hay encuentros accidentales. Solo mensajes que aún no has leído.", luz:"Las personas que aparecen ahora no llegaron por casualidad — llevan un mensaje, una lección, un regalo.",                                                                                                          sombra:"Fuerzas conexiones donde no las hay, o rechazas las que llegan porque no se ven como las imaginas.",                                                                                                                        preguntas:["conocer a alguien","nueva persona","llegará el amor","conexión","nueva amistad"] },
+  { num:29, bloque:"V · Los Vínculos",       nombre:"El Espejo",           simbolo:"⬚",  keywords:"Reflejo · Proyección · Autoconocimiento", frase:"Lo que más te irrita en otros, te pertenece.",                  luz:"Las personas en tu vida son espejos de aspectos de ti mismo. Lo que más admiras en otros ya existe en ti sin desarrollar.",                                                                                                    sombra:"Buscas en los demás la validación, el amor, la identidad que solo puedes darte tú.",                                                                                                                                        preguntas:["por qué esa persona me afecta","qué me dice esta relación","atraigo siempre lo mismo"] },
+  { num:30, bloque:"V · Los Vínculos",       nombre:"La Separación",       simbolo:"↔",  keywords:"Cierre · Duelo · Liberación",      frase:"Toda separación bien vivida es también un acto de amor.",               luz:"Lo que se separa con consciencia deja espacio, no cicatrices. Honrar lo que fue y soltarlo con gratitud es el cierre más poderoso.",                                                                                         sombra:"Te aferras a lo que terminó porque el cierre te enfrenta con un miedo más profundo que la pérdida misma.",                                                                                                                  preguntas:["terminar relación","romper","ruptura","separarse","divorcio","terminar con alguien","cortar"] },
+  { num:31, bloque:"V · Los Vínculos",       nombre:"El Ancestro",         simbolo:"🌳", keywords:"Linaje · Herencia · Sanación",     frase:"Sanar tu linaje es el regalo más grande que puedes dar.",               luz:"Tienes el poder de ser quien sana lo que generaciones no pudieron. Honrar a tus ancestros significa transformar lo que dejaron incompleto.",                                                                                 sombra:"Repites sin saberlo patrones heredados que nunca elegiste. La cadena se rompe cuando la ves con claridad.",                                                                                                                  preguntas:["familia","padres","herencia","historia familiar","patrones familiares","mamá","papá","ancestros"] },
+  { num:32, bloque:"V · Los Vínculos",       nombre:"La Tribu",            simbolo:"△",  keywords:"Comunidad · Pertenencia · Red",    frase:"La tribu correcta no te pide que te pequeñes.",                         luz:"No estás hecho para caminar solo. La comunidad correcta no te pide que te adaptes — te celebra tal cual eres.",                                                                                                               sombra:"Permaneces en una tribu que ya no te nutre por miedo a la soledad. Pertenecer al lugar equivocado cuesta más que el dolor de buscar el correcto.",                                                                          preguntas:["amigos","amistad","soledad","solo","comunidad","pertenencia","me siento solo","tribu"] },
+  { num:33, bloque:"V · Los Vínculos",       nombre:"El Servicio",         simbolo:"⬆",  keywords:"Ofrenda · Entrega · Propósito",   frase:"Solo puedes dar verdaderamente lo que primero tienes.",                 luz:"Servir desde la plenitud — no desde la culpa — es uno de los actos más elevados. Cuando ofreces tus dones genuinamente, participas en la creación del Creador.",                                                               sombra:"Sirves desde el agotamiento o la necesidad de ser visto. Eso no es servicio — es sacrificio no elegido.",                                                                                                                   preguntas:["ayudar","servicio","dar demasiado","impacto","misión","vocación de ayuda","cómo ayudo"] },
+  { num:34, bloque:"V · Los Vínculos",       nombre:"El Traidor",          simbolo:"⚭",  keywords:"Traición · Confianza · Perdón",   frase:"La traición más profunda siempre viene de quien más amaste.",           luz:"Lo que hacen dice quiénes son. Tu valor no disminuye porque alguien no pudo verlo.",                                                                                                                                   sombra:"Cargas la traición de otros como si fuera tu fracaso. Examina también dónde traicionas tu propia palabra.",                                                                                                                 preguntas:["traición","me traicionaron","perdonar","confianza","me fallaron","mentira","engaño","infidelidad"] },
+  { num:35, bloque:"V · Los Vínculos",       nombre:"El Vínculo Sagrado",  simbolo:"∞",  keywords:"Alma gemela · Unión profunda · Destino", frase:"Algunas almas se reconocen antes de verse.",                     luz:"Hay una conexión en tu vida que va más allá de lo ordinario. Este vínculo tiene propósito — para ambos.",                                                                                                                    sombra:"Idealizas un vínculo hasta volverlo jaula. El amor sagrado no requiere que pierdas tu individualidad.",                                                                                                                     preguntas:["alma gemela","amor verdadero","conexión especial","destino","es el indicado","compañero de vida"] },
+  { num:36, bloque:"VI · La Manifestación",  nombre:"La Abundancia",       simbolo:"◈",  keywords:"Prosperidad · Merecimiento · Flujo", frase:"La abundancia no llega — se permite.",                               luz:"La abundancia es el estado natural del universo. Si no fluye, hay una creencia que la bloquea. Examina qué historia cargas sobre el dinero y el merecer.",                                                                      sombra:"Saboteas la prosperidad porque en el fondo no crees merecerla. ¿Qué cambiaría en tu identidad si de verdad tuvieras todo?",                                                                                                 preguntas:["dinero","prosperidad","éxito económico","abundancia","no me alcanza","deudas","merezco"] },
+  { num:37, bloque:"VI · La Manifestación",  nombre:"La Creación",         simbolo:"✦",  keywords:"Manifestación · Co-creación · Poder", frase:"Eres un ser creador. Cada pensamiento sostenido toma forma.",       luz:"Todo lo que imaginas con claridad y sientes con certeza comienza a tomar forma. Lo que piensas repetidamente, construyes.",                                                                                               sombra:"Creas desde el miedo y te preguntas por qué manifiestas lo que no quieres. Elige conscientemente qué sostienes en tu mente.",                                                                                               preguntas:["manifestar","ley atracción","cómo atraer","visualizar","crear realidad","pensamientos"] },
+  { num:38, bloque:"VI · La Manifestación",  nombre:"El Don",              simbolo:"◉",  keywords:"Talento · Misión · Regalo",        frase:"El talento que te parece ordinario, al mundo le parece milagro.",       luz:"Tienes un don que el mundo necesita. No el que crees que deberías tener — el que ya tienes y menosprecias por ser tan natural en ti.",                                                                                    sombra:"Entierras tus dones por miedo al juicio o a brillar. Cada día que no los usas, el mundo pierde algo irreemplazable.",                                                                                                       preguntas:["talento","habilidad","vivir de lo que amo","trabajo soñado","don","creatividad","emprender"] },
+  { num:39, bloque:"VI · La Manifestación",  nombre:"El Obstáculo",        simbolo:"▣",  keywords:"Resistencia · Maestro · Desvío",  frase:"El obstáculo no es el problema. Tu relación con él sí.",                luz:"El obstáculo no es señal de camino equivocado — a veces es la señal de que estás en el correcto. Lo que resiste tu avance revela dónde debes crecer.",                                                                         sombra:"Usas los obstáculos como justificación para no avanzar. Examina si el muro que ves es real o construido por la mente.",                                                                                                     preguntas:["obstáculo","bloqueo","no avanzo","trabado","todo se bloquea","no puedo","dificultad"] },
+  { num:40, bloque:"VI · La Manifestación",  nombre:"La Cosecha",          simbolo:"❋",  keywords:"Resultados · Recompensa · Ciclo", frase:"Todo lo que sembraste con intención, vuelve multiplicado.",              luz:"Es tiempo de recoger lo que sembraste. No todo lo que crece es lo que esperabas — pero todo lo que cosechas es exactamente lo que necesitabas.",                                                                              sombra:"Exiges cosechar sin haber sembrado, o no reconoces la cosecha porque no tiene la forma que imaginaste.",                                                                                                                    preguntas:["resultados","esfuerzo","vale la pena","frutos","recompensa","cuándo veré","cosecha"] },
+  { num:41, bloque:"VI · La Manifestación",  nombre:"El Milagro",          simbolo:"✸",  keywords:"Gracia · Intervención divina · Fe", frase:"El milagro ya ocurrió. Lo que falta es que lo veas.",               luz:"Hay eventos que no pueden explicarse con lógica — solo con gracia. El Creador opera entre lo posible y lo imposible. Estate disponible.",                                                                                    sombra:"Esperas el milagro grande sin ver los pequeños que ya ocurren a diario. La fe es confiar en que todo sirve.",                                                                                                               preguntas:["milagro","imposible","fe","creer","señal","dios me ayuda","intervención divina","funciona"] },
+  { num:42, bloque:"VI · La Manifestación",  nombre:"La Sombra del Creador", simbolo:"◐", keywords:"Responsabilidad · Consecuencia · Poder", frase:"Crear sin consciencia es destruir con otro nombre.",           luz:"Con el poder de crear viene la responsabilidad de lo que manifiestas. Crear conscientemente es el acto más sagrado.",                                                                                                        sombra:"Ejerces tu poder sin ver su impacto. Lo que creas desde el ego eventualmente regresa. No como castigo: como espejo.",                                                                                                       preguntas:["consecuencias","impacto","daño","karma","responsabilidad","hice daño","culpa"] },
+  { num:43, bloque:"VI · La Manifestación",  nombre:"El Portal",           simbolo:"◎",  keywords:"Oportunidad · Apertura · Momento", frase:"Algunas puertas solo se abren desde adentro.",                         luz:"Hay una ventana de oportunidad abierta ahora. Requiere que tú des el primer paso para que el universo dé los siguientes diez.",                                                                                               sombra:"Esperas el portal perfectamente iluminado y sin riesgos. Pero los portales reales siempre se ven como saltos al vacío desde adentro.",                                                                                       preguntas:["oportunidad","chance","ahora o nunca","momento","puerta","posibilidad","aprovechar"] },
+  { num:44, bloque:"VI · La Manifestación",  nombre:"El Todo",             simbolo:"○",  keywords:"Unidad · Totalidad · Regreso",     frase:"Al final, siempre, todo vuelve a ser uno.",                             luz:"Detrás de toda separación y búsqueda hay una verdad: todo es parte del mismo origen. Tú y lo que buscas son la misma cosa vista desde ángulos distintos.",                                                                   sombra:"Te sientes separado, solo, desconectado. Esa fragmentación no es la realidad — es la experiencia. La conexión que buscas nunca se perdió.",                                                                                 preguntas:["sentido","para qué","todo","muerte","más allá","espiritualidad","solo en el universo"] },
+];
+
+// ══════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════════════════════════
+let cartaActual = null;
+let yaVolteada  = false;
+
+// ══════════════════════════════════════════════════
+// SELECCIÓN DE CARTA POR KEYWORDS
+// ══════════════════════════════════════════════════
+function seleccionarCarta(pregunta) {
+  const q = pregunta.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  let mejor = null, score = -1;
+  CARTAS.forEach(c => {
+    let s = 0;
+    c.preguntas.forEach(k => {
+      const kn = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+      if (q.includes(kn)) s += kn.length;
+    });
+    if (s > score) { score = s; mejor = c; }
+  });
+  return score === 0 ? CARTAS[Math.floor(Math.random()*CARTAS.length)] : mejor;
+}
+
+// ══════════════════════════════════════════════════
+// CONSULTAR ORÁCULO
+// ══════════════════════════════════════════════════
+async function consultarOraculo() {
+  const pregunta = document.getElementById('pregunta').value.trim();
+  if (!pregunta) { mostrarToast('Escribe tu pregunta antes de consultar'); return; }
+
+  const btn = document.getElementById('btnConsultar');
+  btn.disabled = true;
+  btn.textContent = '✦ El Creador medita... ✦';
+
+  cartaActual = seleccionarCarta(pregunta);
+  yaVolteada  = false;
+
+  // Ocultar cosas previas
+  document.getElementById('cartaContainer').classList.remove('visible');
+  document.getElementById('ctaContainer').classList.remove('visible');
+  document.getElementById('cartaTabs').style.display = 'none';
+
+  // Preparar imagen del flip
+  const img = document.getElementById('cartaImagen');
+  img.src = imgPath(cartaActual.num);
+  img.onerror = () => { img.src = ''; img.style.display='none'; };
+  document.getElementById('cartaImagenNombre').textContent = cartaActual.nombre;
+
+  // Reset flip card
+  document.getElementById('flipCard').classList.remove('flipped');
+  document.getElementById('flipScene').classList.add('visible');
+  document.getElementById('flipHint').style.display = 'block';
+
+  // Scroll a la carta
+  setTimeout(() => document.getElementById('flipScene').scrollIntoView({behavior:'smooth',block:'center'}), 150);
+
+  // Precargar la interpretación IA en paralelo
+  generarInterpretacion(pregunta, cartaActual);
+
+  btn.disabled = false;
+  btn.textContent = '✦ Hacer otra consulta ✦';
+}
+
+// ══════════════════════════════════════════════════
+// VOLTEAR CARTA
+// ══════════════════════════════════════════════════
+function voltearCarta() {
+  if (yaVolteada) return;
+  yaVolteada = true;
+
+  document.getElementById('flipCard').classList.add('flipped');
+  document.getElementById('flipHint').style.display = 'none';
+
+  // Mostrar info de la carta después de la animación
+  setTimeout(() => {
+    poblarCarta(cartaActual);
+    document.getElementById('cartaContainer').classList.add('visible');
+    setTimeout(() => {
+      document.getElementById('cartaContainer').scrollIntoView({behavior:'smooth',block:'start'});
+    }, 200);
+  }, 900);
+}
+
+// ══════════════════════════════════════════════════
+// POBLAR DATOS DE LA CARTA
+// ══════════════════════════════════════════════════
+function poblarCarta(carta) {
+  document.getElementById('cartaNum').textContent      = String(carta.num).padStart(2,'0');
+  document.getElementById('cartaBloque').textContent   = carta.bloque;
+  document.getElementById('cartaNombre').textContent   = carta.nombre;
+  document.getElementById('cartaKeywords').textContent = carta.keywords;
+  document.getElementById('cartaSimb').textContent     = carta.simbolo;
+  document.getElementById('cartaFrase').textContent    = carta.frase;
+  document.getElementById('textoLuz').textContent      = carta.luz;
+  document.getElementById('textoSombra').textContent   = carta.sombra;
+
+  // Reset tabs
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('activo'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('activo'));
+  document.querySelectorAll('.tab-btn')[0].classList.add('activo');
+  document.getElementById('tab-luz').classList.add('activo');
+}
+
+// ══════════════════════════════════════════════════
+// GENERAR INTERPRETACIÓN CON IA
+// ══════════════════════════════════════════════════
+async function generarInterpretacion(pregunta, carta) {
+  document.getElementById('interpretacionTexto').innerHTML = `
+    <div style="text-align:center;color:var(--texto-opaco)">
+      El Creador medita tu pregunta
+      <div class="puntos-carga"><span></span><span></span><span></span></div>
+    </div>`;
+
+  const prompt = `Eres El Oráculo del Creador. La carta revelada es: "${carta.nombre}" (${carta.bloque}).
+Su frase sagrada: "${carta.frase}". Energía: ${carta.keywords}.
+Pregunta del consultante: "${pregunta}"
+Crea una interpretación personalizada de máximo 70 palabras que conecte la energía de la carta con su pregunta. 
+Tono místico, poético y transformador en español. Segunda persona. Sin mencionar el nombre de la carta. Sin saludos.`;
+
+  try {
+    const res  = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}] })
+    });
+    const data = await res.json();
+    const txt  = data.content?.[0]?.text || carta.luz;
+    escribirTexto(document.getElementById('interpretacionTexto'), txt);
+  } catch {
+    escribirTexto(document.getElementById('interpretacionTexto'), carta.luz);
+  }
+
+  // Mostrar tabs y CTA
+  document.getElementById('cartaTabs').style.display = 'flex';
+  setTimeout(()=>document.getElementById('ctaContainer').classList.add('visible'), 600);
+}
+
+// Efecto de escritura
+function escribirTexto(el, texto) {
+  el.textContent=''; let i=0;
+  const iv=setInterval(()=>{ el.textContent+=texto[i]; i++; if(i>=texto.length) clearInterval(iv); },20);
+}
+
+function mostrarTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('activo'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('activo'));
+  btn.classList.add('activo');
+  document.getElementById('tab-'+tab).classList.add('activo');
+}
+
+function mostrarForm() {
+  document.getElementById('formDatos').classList.add('visible');
+  document.getElementById('btnVerForm').style.display='none';
+  setTimeout(()=>document.getElementById('formDatos').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+function procesarPago() {
+  const nombre=document.getElementById('inputNombre').value.trim();
+  const fecha =document.getElementById('inputFecha').value;
+  const email =document.getElementById('inputEmail').value.trim();
+  if(!nombre||!fecha||!email){mostrarToast('Completa todos los campos');return;}
+  if(!email.includes('@')){mostrarToast('Ingresa un correo válido');return;}
+  document.getElementById('modalNombre').textContent=nombre;
+  document.getElementById('modalOverlay').classList.add('visible');
+}
+
+function cerrarModal(e){
+  if(e.target.id==='modalOverlay') document.getElementById('modalOverlay').classList.remove('visible');
+}
+
+function mostrarToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('visible');
+  setTimeout(()=>t.classList.remove('visible'),3000);
+}
+
+document.getElementById('pregunta').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.ctrlKey) consultarOraculo();
+});
+</script>
+</body>
+</html>
