@@ -284,6 +284,19 @@
   .btn-modal{padding:12px 34px;background:transparent;border:1px solid rgba(201,168,76,.4);border-radius:2px;color:var(--dorado);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
   .btn-modal:hover{background:rgba(201,168,76,.1);border-color:var(--dorado);}
 
+  .lectura-profunda-container { margin:0 0 60px; animation:aparecer 1s ease forwards; }
+  .lectura-box { background:linear-gradient(135deg,rgba(10,4,20,.99) 0%,rgba(5,4,8,1) 100%); border:1px solid rgba(201,168,76,.3); border-radius:4px; overflow:hidden; position:relative; }
+  .lectura-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--dorado-claro),var(--purpura-brillo),transparent); }
+  .lectura-header { padding:32px 36px 24px; border-bottom:1px solid rgba(201,168,76,.1); text-align:center; background:rgba(42,10,74,.2); }
+  .lectura-eyebrow { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.4em; color:var(--purpura-brillo); text-transform:uppercase; display:block; margin-bottom:10px; }
+  .lectura-titulo { font-family:'Cinzel Decorative',serif; font-size:clamp(1rem,3vw,1.4rem); color:var(--dorado-claro); font-weight:700; }
+  .lectura-cuerpo { padding:32px 36px; font-size:1.1rem; line-height:1.95; color:var(--texto); }
+  .lectura-seccion { margin-bottom:28px; }
+  .lectura-seccion-titulo { font-family:'Cinzel',serif; font-size:.62rem; letter-spacing:.3em; color:var(--dorado-opaco); text-transform:uppercase; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+  .lectura-seccion-titulo::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(201,168,76,.2),transparent); }
+  .lectura-seccion p { font-style:italic; font-weight:300; }
+  .lectura-afirmacion { background:rgba(42,10,74,.3); border:1px solid rgba(201,168,76,.15); border-radius:3px; padding:20px 24px; text-align:center; margin-top:28px; }
+  .lectura-afirmacion p { font-size:1.15rem; color:var(--dorado-claro); font-style:italic; line-height:1.7; }
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(20,8,40,.95);border:1px solid rgba(201,168,76,.3);color:var(--dorado-claro);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.12em;padding:12px 24px;border-radius:2px;z-index:1000;transition:transform .4s;white-space:nowrap;}
   .toast.visible{transform:translateX(-50%) translateY(0);}
 
@@ -393,22 +406,22 @@ for(let i=0;i<18;i++){
   <div class="cta-container" id="ctaContainer">
     <div class="sep"><span>✦</span></div>
     <div class="cta-card">
-      <span class="cta-eyebrow">El Creador tiene más para ti</span>
-      <h2 class="cta-titulo">Desbloquea tu Lectura Sagrada Completa</h2>
-      <p class="cta-desc">Tu nombre y fecha de nacimiento abren el registro de tu alma. Lo que el Creador reserva para ti va mucho más allá de lo que acabas de recibir.</p>
+      <span class="cta-eyebrow">⚠ Tu lectura está incompleta</span>
+      <h2 class="cta-titulo">Esta carta revela algo más profundo sobre tu situación</h2>
+      <p class="cta-desc">La parte importante de tu lectura sigue bloqueada. Lo que viste fue solo la entrada — la respuesta real requiere ir más profundo.</p>
       <ul class="beneficios">
-        <li>Mensaje personalizado según tu energía natal</li>
-        <li>Los bloqueos específicos que frenan tu propósito</li>
-        <li>La acción sagrada que debes tomar ahora</li>
-        <li>Afirmación codificada solo para tu alma</li>
-        <li>Tirada de 3 cartas: Pasado · Presente · Camino</li>
+        <li>Lo que esta carta realmente dice sobre tu situación específica</li>
+        <li>El patrón exacto que está repitiendo en tu vida ahora mismo</li>
+        <li>Lo que necesitas hacer — no en general, sino en tu caso</li>
+        <li>Tirada de 3 cartas: lo que traes, dónde estás, qué viene</li>
+        <li>Mensaje directo basado en tu nombre y fecha de nacimiento</li>
       </ul>
       <div class="precio-wrap">
         <span class="precio-antes">$9.99 USD</span>
         <span class="precio-actual">$4.99 USD</span>
         <span class="precio-nota">Acceso completo · Pago único · Entrega inmediata</span>
       </div>
-      <button class="btn-ver-form" id="btnVerForm" onclick="mostrarForm()">✦ Quiero mi lectura completa ✦</button>
+      <button class="btn-ver-form" id="btnVerForm" onclick="mostrarForm()">Revelar el mensaje oculto →</button>
       <div class="form-datos" id="formDatos">
         <div class="form-sep"></div>
         <div class="form-grid">
@@ -425,8 +438,25 @@ for(let i=0;i<18;i++){
           <label>Correo electrónico</label>
           <input type="email" id="inputEmail" placeholder="para recibir tu lectura"/>
         </div>
-        <button class="btn-pagar" onclick="procesarPago()">🔒 Desbloquear mi lectura sagrada · $4.99</button>
-        <p class="garantia">✦ Pago seguro · Si no sientes conexión, te devolvemos el dinero</p>
+        <button class="btn-pagar" onclick="procesarPago()">🔒 Ver la lectura completa · $4.99</button>
+        <p class="garantia">✦ Pago seguro · Aparece aquí inmediatamente · Sin esperas</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LECTURA PROFUNDA — aparece aquí al pagar -->
+  <div class="lectura-profunda-container" id="lecturaContainer" style="display:none">
+    <div class="sep"><span>✨</span></div>
+    <div class="lectura-box">
+      <div class="lectura-header">
+        <span class="lectura-eyebrow">Lectura Sagrada Completa</span>
+        <h3 class="lectura-titulo" id="lecturaTitulo"></h3>
+      </div>
+      <div class="lectura-cuerpo" id="lecturaCuerpo">
+        <div style="text-align:center;padding:40px;color:var(--texto-opaco)">
+          Generando tu lectura personalizada
+          <div class="puntos-carga" style="margin-top:12px"><span></span><span></span><span></span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -452,7 +482,7 @@ for(let i=0;i<18;i++){
 // Cambia la extensión si tus archivos son .jpg
 // ══════════════════════════════════════════════════
 const IMG_BASE = 'images/cartas/';
-const IMG_EXT  = '.jpg'; // ← cambia a '.jpg' si necesitas
+const IMG_EXT  = '.png'; // ← cambia a '.jpg' si necesitas
 
 function imgPath(num) {
   return IMG_BASE + 'carta-' + String(num).padStart(2,'0') + IMG_EXT;
@@ -621,11 +651,27 @@ async function generarInterpretacion(pregunta, carta) {
       <div class="puntos-carga"><span></span><span></span><span></span></div>
     </div>`;
 
-  const prompt = `Eres El Oráculo del Creador. La carta revelada es: "${carta.nombre}" (${carta.bloque}).
-Su frase sagrada: "${carta.frase}". Energía: ${carta.keywords}.
-Pregunta del consultante: "${pregunta}"
-Crea una interpretación personalizada de máximo 70 palabras que conecte la energía de la carta con su pregunta. 
-Tono místico, poético y transformador en español. Segunda persona. Sin mencionar el nombre de la carta. Sin saludos.`;
+  const prompt = `Eres El Oráculo del Creador. Carta: "${carta.nombre}". Energía: ${carta.keywords}.
+Pregunta: "${pregunta}"
+
+Escribe una respuesta en 4 partes seguidas, sin títulos, máximo 85 palabras:
+
+1. REFLEJO: Una oración que conecte emocionalmente con lo que hay detrás de su pregunta. Empieza con algo como "No estás preguntando esto por casualidad..." Hazlo específico a SU situación, no genérico.
+
+2. REVELACIÓN: "Esta carta aparece cuando..." — describe qué está viviendo internamente esta persona ahora mismo. Psicológico y preciso.
+
+3. TENSIÓN: Señala algo que no están viendo todavía. "Pero hay algo que aún no estás mirando de frente..." — abre una pregunta, NO la respondas.
+
+4. CORTE: Termina SIEMPRE con esta frase exacta: "La lectura completa revela lo que esta carta todavía no te mostró."
+
+REGLAS ESTRICTAS:
+- Español neutro para todo LATAM
+- Habla como alguien que realmente conoce al consultante, no como oráculo genérico
+- Sin poesía abstracta ni frases Pinterest
+- Sin mencionar el nombre de la carta
+- Sin saludos ni despedidas  
+- NUNCA cierres emocionalmente — siempre deja algo abierto y sin resolver
+- La persona debe terminar de leer con más curiosidad que cuando empezó`;
 
   try {
     const res  = await fetch("https://api.anthropic.com/v1/messages", {
@@ -663,14 +709,124 @@ function mostrarForm() {
   setTimeout(()=>document.getElementById('formDatos').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
 
-function procesarPago() {
+async function procesarPago() {
   const nombre=document.getElementById('inputNombre').value.trim();
   const fecha =document.getElementById('inputFecha').value;
   const email =document.getElementById('inputEmail').value.trim();
   if(!nombre||!fecha||!email){mostrarToast('Completa todos los campos');return;}
   if(!email.includes('@')){mostrarToast('Ingresa un correo válido');return;}
-  document.getElementById('modalNombre').textContent=nombre;
-  document.getElementById('modalOverlay').classList.add('visible');
+
+  // Aquí irá Stripe cuando lo integremos
+  // Por ahora simula el pago y genera la lectura profunda
+
+  const btnPagar = document.querySelector('.btn-pagar');
+  btnPagar.textContent = '✦ Generando tu lectura...';
+  btnPagar.disabled = true;
+
+  // Mostrar sección de lectura profunda
+  const lc = document.getElementById('lecturaContainer');
+  lc.style.display = 'block';
+  document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
+  setTimeout(()=>lc.scrollIntoView({behavior:'smooth',block:'start'}),200);
+
+  // Calcular signo numerológico básico
+  const fechaObj = new Date(fecha);
+  const dia = fechaObj.getDate();
+  const mes = fechaObj.getMonth()+1;
+  const anio = fechaObj.getFullYear();
+  let suma = (dia+mes+anio).toString().split('').reduce((a,b)=>a+parseInt(b),0);
+  while(suma>9&&suma!==11&&suma!==22) suma = suma.toString().split('').reduce((a,b)=>a+parseInt(b),0);
+  const numVida = suma;
+
+  const promptProfundo = `Eres El Oráculo del Creador. Genera una LECTURA PROFUNDA Y COMPLETA.
+
+DATOS DEL CONSULTANTE:
+- Nombre: ${nombre}
+- Fecha de nacimiento: ${fecha}
+- Número de vida (numerología): ${numVida}
+- Carta revelada: ${cartaActual.nombre} — ${cartaActual.keywords}
+- Pregunta original: "${document.getElementById('pregunta').value}"
+
+Genera la lectura en estas secciones exactas, con este formato:
+
+[MENSAJE PRINCIPAL]
+3-4 párrafos profundos y específicos. Conecta la energía de la carta con su pregunta y su número de vida ${numVida}. Habla directamente a ${nombre}. Psicológico, directo, revelador. No genérico.
+
+[LO QUE DEBES SOLTAR AHORA]
+2 párrafos sobre qué patrón específico está bloqueando a ${nombre} basado en la energía de esta carta y su número de vida.
+
+[LA ACCIÓN SAGRADA]
+1-2 párrafos con la acción concreta y específica que debe tomar ${nombre} en los próximos 7 días. No vaga — específica.
+
+[TU AFIRMACIÓN PERSONAL]
+Una sola afirmación poderosa de máximo 20 palabras, creada específicamente para ${nombre} y su situación. Que empiece con "Yo..."
+
+REGLAS:
+- Español neutro LATAM
+- Habla a ${nombre} por su nombre al menos 3 veces
+- Específico y personal, nunca genérico
+- Máximo 350 palabras en total
+- Mezcla espiritualidad con psicología práctica`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:promptProfundo}]})
+    });
+    const data = await res.json();
+    const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, numVida);
+    renderizarLectura(txt, nombre);
+  } catch {
+    renderizarLectura(generarLecturaLocal(nombre, numVida), nombre);
+  }
+
+  btnPagar.textContent = '✓ Lectura generada';
+}
+
+function generarLecturaLocal(nombre, numVida) {
+  return `[MENSAJE PRINCIPAL]
+${nombre}, esta carta no apareció por coincidencia. Hay algo que llevas tiempo sabiendo internamente pero que tu mente racional ha estado posponiendo. Tu número de vida ${numVida} refuerza este momento — es un período de claridad, no de espera.
+
+Lo que describes en tu pregunta tiene una raíz más profunda de lo que parece. No es la situación en sí lo que te pesa — es lo que esa situación dice sobre lo que crees que mereces.
+
+[LO QUE DEBES SOLTAR AHORA]
+${nombre}, hay una historia que repites sobre ti mismo que ya no es verdad. Quizás nunca lo fue. Esta carta señala exactamente ese punto de tensión — el lugar donde das más de lo que recibes porque en el fondo crees que así te ganas el derecho a estar.
+
+Soltar eso no es un proceso largo. Es una decisión.
+
+[LA ACCIÓN SAGRADA]
+En los próximos 7 días, ${nombre}, haz una sola cosa: identifica una situación donde normalmente dirías que sí y di que no. No porque sea malo decir sí — sino para ver qué sientes cuando priorizas tu propio criterio.
+
+[TU AFIRMACIÓN PERSONAL]
+Yo, ${nombre}, elijo desde mi centro y confío en lo que sé.`;
+}
+
+function renderizarLectura(texto, nombre) {
+  const cuerpo = document.getElementById('lecturaCuerpo');
+  const secciones = [
+    {key:'[MENSAJE PRINCIPAL]', icon:'◈', label:'Mensaje Principal'},
+    {key:'[LO QUE DEBES SOLTAR AHORA]', icon:'☽', label:'Lo Que Debes Soltar'},
+    {key:'[LA ACCIÓN SAGRADA]', icon:'✦', label:'La Acción Sagrada'},
+    {key:'[TU AFIRMACIÓN PERSONAL]', icon:'○', label:'Tu Afirmación Personal'},
+  ];
+
+  let html = '';
+  secciones.forEach((sec, idx) => {
+    const start = texto.indexOf(sec.key);
+    const end = idx < secciones.length-1 ? texto.indexOf(secciones[idx+1].key) : texto.length;
+    if(start === -1) return;
+    const contenido = texto.slice(start + sec.key.length, end !== -1 ? end : undefined).trim();
+    const esAfirmacion = idx === secciones.length-1;
+    html += `<div class="lectura-seccion">
+      <div class="lectura-seccion-titulo">${sec.icon} ${sec.label}</div>
+      ${esAfirmacion
+        ? '<div class="lectura-afirmacion"><p>' + contenido + '</p></div>'
+        : '<p>' + contenido.split('\n\n').join('</p><p style="margin-top:14px">').split('\n').join(' ') + '</p>'
+      }
+    </div>`;
+  });
+
+  cuerpo.innerHTML = html || `<p>${texto}</p>`;
 }
 
 function cerrarModal(e){
