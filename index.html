@@ -674,10 +674,11 @@ REGLAS ESTRICTAS:
 - La persona debe terminar de leer con más curiosidad que cuando empezó`;
 
   try {
-    const res  = await fetch("https://api.anthropic.com/v1/messages", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}] })
-    });
+    const res = await fetch("/api/oracle", {
+  method:"POST", headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}]})
+});
+
     const data = await res.json();
     const txt  = data.content?.[0]?.text || carta.luz;
     escribirTexto(document.getElementById('interpretacionTexto'), txt);
@@ -769,10 +770,10 @@ REGLAS:
 - Mezcla espiritualidad con psicología práctica`;
 
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:promptProfundo}]})
-    });
+   const res = await fetch("/api/oracle", {
+  method:"POST", headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}]})
+});
     const data = await res.json();
     const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, numVida);
     renderizarLectura(txt, nombre);
