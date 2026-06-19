@@ -717,8 +717,24 @@ async function procesarPago() {
   if(!nombre||!fecha||!email){mostrarToast('Completa todos los campos');return;}
   if(!email.includes('@')){mostrarToast('Ingresa un correo válido');return;}
 
-  // Aquí irá Stripe cuando lo integremos
-  // Por ahora simula el pago y genera la lectura profunda
+ // Llamar a Stripe
+  try {
+    const stripeRes = await fetch('/api/stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email })
+    });
+    const stripeData = await stripeRes.json();
+    if (stripeData.url) {
+      window.location.href = stripeData.url;
+      return;
+    }
+  } catch(e) {
+    mostrarToast('Error al procesar el pago. Intenta de nuevo.');
+    btnPagar.disabled = false;
+    btnPagar.textContent = '🔒 Ver la lectura completa · $4.99';
+    return;
+  }
 
   const btnPagar = document.querySelector('.btn-pagar');
   btnPagar.textContent = '✦ Generando tu lectura...';
@@ -839,7 +855,50 @@ function mostrarToast(msg){
   t.textContent=msg; t.classList.add('visible');
   setTimeout(()=>t.classList.remove('visible'),3000);
 }
+// Detectar retorno de Stripe
+window.addEventListener('load', () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('pago') === 'exitoso') {
+    const nombre = params.get('nombre') || 'Consultante';
+    document.getElementById('lecturaContainer').style.display = 'block';
+    document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
+    document.getElementById('lecturaCuerpo').innerHTML = `
+      <div style="text-align:center;padding:40px;color:var(--texto-opaco)">
+        Generando tu lectura personalizada
+        <div class="puntos-carga" style="margin-top:12px"><span></span><span></span><span></span></div>
+      </div>`;
+    document.getElementById('lecturaContainer').scrollIntoView({behavior:'smooth'});
+    generarLecturaPostPago(nombre);
+  }
+});
 
+async function generarLecturaPostPago(nombre) {
+  const cartaAleatoria = CARTAS[Math.floor(Math.random() * CARTAS.length)];
+  const promptPost = `Eres El Oráculo del Creador. Genera una lectura profunda y completa para ${nombre}.
+Carta: ${cartaAleatoria.nombre}. Energía: ${cartaAleatoria.keywords}.
+Sigue exactamente este formato:
+[MENSAJE PRINCIPAL]
+3 párrafos profundos y personales dirigidos a ${nombre}.
+[LO QUE DEBES SOLTAR AHORA]
+2 párrafos sobre qué patrón soltar.
+[LA ACCIÓN SAGRADA]
+1 párrafo con acción concreta para los próximos 7 días.
+[TU AFIRMACIÓN PERSONAL]
+Una afirmación que empiece con "Yo ${nombre}..."
+Español neutro LATAM. Máximo 300 palabras.`;
+
+  try {
+    const res = await fetch('/api/oracle', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:promptPost}]})
+    });
+    const data = await res.json();
+    const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, 7);
+    renderizarLectura(txt, nombre);
+  } catch {
+    renderizarLectura(generarLecturaLocal(nombre, 7), nombre);
+  }
+}
 document.getElementById('pregunta').addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.ctrlKey) consultarOraculo();
 });
