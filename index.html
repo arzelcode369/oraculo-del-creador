@@ -434,10 +434,7 @@ for(let i=0;i<18;i++){
             <input type="date" id="inputFecha"/>
           </div>
         </div>
-        <div class="input-wrap">
-          <label>Correo electrónico</label>
-          <input type="email" id="inputEmail" placeholder="para recibir tu lectura"/>
-        </div>
+        
         <button class="btn-pagar" onclick="procesarPago()">🔒 Ver la lectura completa · $4.99</button>
         <p class="garantia">✦ Pago seguro · Aparece aquí inmediatamente · Sin esperas</p>
       </div>
@@ -713,8 +710,8 @@ function mostrarForm() {
 async function procesarPago() {
   const nombre=document.getElementById('inputNombre').value.trim();
   const fecha =document.getElementById('inputFecha').value;
-  const email =document.getElementById('inputEmail').value.trim();
-  if(!nombre||!fecha||!email){mostrarToast('Completa todos los campos');return;}
+  const email = '';
+  if(!nombre||!fecha){mostrarToast('Completa todos los campos');return;}
   if(!email.includes('@')){mostrarToast('Ingresa un correo válido');return;}
 
  // Llamar a Stripe
