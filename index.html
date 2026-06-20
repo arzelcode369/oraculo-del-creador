@@ -242,7 +242,7 @@
   .sep span{background:var(--negro);padding:0 20px;font-size:1.3rem;position:relative;z-index:1;}
 
   .cta-card{background:linear-gradient(135deg,rgba(42,10,74,.5) 0%,rgba(13,10,20,.9) 50%,rgba(42,10,74,.35) 100%);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:36px;text-align:center;position:relative;overflow:hidden;}
-  .cta-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(176,110,232,.05) 0%,transparent 70%);animation:pulso-fondo 6s ease-in-out infinite;}
+ .cta-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(176,110,232,.05) 0%,transparent 70%);animation:pulso-fondo 6s ease-in-out infinite;pointer-events:none;}
   @keyframes pulso-fondo{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
   .cta-eyebrow{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.4em;color:var(--purpura-brillo);text-transform:uppercase;margin-bottom:12px;display:block;}
   .cta-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(1rem,3vw,1.5rem);font-weight:700;color:var(--dorado-claro);margin-bottom:12px;line-height:1.3;}
