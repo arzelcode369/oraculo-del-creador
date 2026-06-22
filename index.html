@@ -714,77 +714,9 @@ async function procesarPago() {
     mostrarToast('Completa todos los campos'); 
     return; 
   }
-  // Guardar datos para recuperarlos al volver de Hotmart
   localStorage.setItem('oraculo_nombre', nombre);
   localStorage.setItem('oraculo_fecha', fecha);
-  // Mandar a Hotmart
   window.location.href = 'https://pay.hotmart.com/D106429733N?nome_cliente=' + encodeURIComponent(nombre);
-}
-
- 
-
-  const btnPagar = document.querySelector('.btn-pagar');
-  btnPagar.textContent = '✦ Generando tu lectura...';
-  btnPagar.disabled = true;
-
-  // Mostrar sección de lectura profunda
-  const lc = document.getElementById('lecturaContainer');
-  lc.style.display = 'block';
-  document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
-  setTimeout(()=>lc.scrollIntoView({behavior:'smooth',block:'start'}),200);
-
-  // Calcular signo numerológico básico
-  const fechaObj = new Date(fecha);
-  const dia = fechaObj.getDate();
-  const mes = fechaObj.getMonth()+1;
-  const anio = fechaObj.getFullYear();
-  let suma = (dia+mes+anio).toString().split('').reduce((a,b)=>a+parseInt(b),0);
-  while(suma>9&&suma!==11&&suma!==22) suma = suma.toString().split('').reduce((a,b)=>a+parseInt(b),0);
-  const numVida = suma;
-
-  const promptProfundo = `Eres El Oráculo del Creador. Genera una LECTURA PROFUNDA Y COMPLETA.
-
-DATOS DEL CONSULTANTE:
-- Nombre: ${nombre}
-- Fecha de nacimiento: ${fecha}
-- Número de vida (numerología): ${numVida}
-- Carta revelada: ${cartaActual.nombre} — ${cartaActual.keywords}
-- Pregunta original: "${document.getElementById('pregunta').value}"
-
-Genera la lectura en estas secciones exactas, con este formato:
-
-[MENSAJE PRINCIPAL]
-3-4 párrafos profundos y específicos. Conecta la energía de la carta con su pregunta y su número de vida ${numVida}. Habla directamente a ${nombre}. Psicológico, directo, revelador. No genérico.
-
-[LO QUE DEBES SOLTAR AHORA]
-2 párrafos sobre qué patrón específico está bloqueando a ${nombre} basado en la energía de esta carta y su número de vida.
-
-[LA ACCIÓN SAGRADA]
-1-2 párrafos con la acción concreta y específica que debe tomar ${nombre} en los próximos 7 días. No vaga — específica.
-
-[TU AFIRMACIÓN PERSONAL]
-Una sola afirmación poderosa de máximo 20 palabras, creada específicamente para ${nombre} y su situación. Que empiece con "Yo..."
-
-REGLAS:
-- Español neutro LATAM
-- Habla a ${nombre} por su nombre al menos 3 veces
-- Específico y personal, nunca genérico
-- Máximo 350 palabras en total
-- Mezcla espiritualidad con psicología práctica`;
-
-  try {
-   const res = await fetch("/api/oracle", {
-  method:"POST", headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}]})
-});
-    const data = await res.json();
-    const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, numVida);
-    renderizarLectura(txt, nombre);
-  } catch {
-    renderizarLectura(generarLecturaLocal(nombre, numVida), nombre);
-  }
-
-  btnPagar.textContent = '✓ Lectura generada';
 }
 
 function generarLecturaLocal(nombre, numVida) {
