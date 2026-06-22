@@ -562,6 +562,17 @@ function seleccionarCarta(pregunta) {
 // CONSULTAR ORÁCULO
 // ══════════════════════════════════════════════════
 async function consultarOraculo() {
+// Verificar límite de consultas gratis
+  const consultasHechas = parseInt(localStorage.getItem('oraculo_consultas') || '0');
+  if (consultasHechas >= 3) {
+    mostrarToast('Has usado tus 3 consultas gratuitas');
+    setTimeout(() => {
+      document.getElementById('ctaContainer').classList.add('visible');
+      document.getElementById('ctaContainer').scrollIntoView({behavior:'smooth'});
+    }, 1000);
+    return;
+  }
+  localStorage.setItem('oraculo_consultas', consultasHechas + 1);
   const pregunta = document.getElementById('pregunta').value.trim();
   if (!pregunta) { mostrarToast('Escribe tu pregunta antes de consultar'); return; }
 
