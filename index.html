@@ -708,30 +708,20 @@ function mostrarForm() {
 }
 
 async function procesarPago() {
-  const nombre=document.getElementById('inputNombre').value.trim();
-  const fecha =document.getElementById('inputFecha').value;
-  const email = '';
-  if(!nombre||!fecha){mostrarToast('Completa todos los campos');return;}
-  
-
- // Llamar a Stripe
-  try {
-    const stripeRes = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email })
-    });
-    const stripeData = await stripeRes.json();
-    if (stripeData.url) {
-      window.location.href = stripeData.url;
-      return;
-    }
-  } catch(e) {
-    mostrarToast('Error al procesar el pago. Intenta de nuevo.');
-    btnPagar.disabled = false;
-    btnPagar.textContent = '🔒 Ver la lectura completa · $4.99';
-    return;
+  const nombre = document.getElementById('inputNombre').value.trim();
+  const fecha  = document.getElementById('inputFecha').value;
+  if(!nombre || !fecha) { 
+    mostrarToast('Completa todos los campos'); 
+    return; 
   }
+  // Guardar datos para recuperarlos al volver de Hotmart
+  localStorage.setItem('oraculo_nombre', nombre);
+  localStorage.setItem('oraculo_fecha', fecha);
+  // Mandar a Hotmart
+  window.location.href = 'https://pay.hotmart.com/D106429733N?nome_cliente=' + encodeURIComponent(nombre);
+}
+
+ 
 
   const btnPagar = document.querySelector('.btn-pagar');
   btnPagar.textContent = '✦ Generando tu lectura...';
@@ -852,11 +842,14 @@ function mostrarToast(msg){
   t.textContent=msg; t.classList.add('visible');
   setTimeout(()=>t.classList.remove('visible'),3000);
 }
-// Detectar retorno de Stripe
+// Detectar retorno de hotmart
 window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   if (params.get('pago') === 'exitoso') {
-    const nombre = params.get('nombre') || 'Consultante';
+    const nombre = params.get('nombre') 
+      || localStorage.getItem('oraculo_nombre') 
+      || 'Consultante';
+    const fecha = localStorage.getItem('oraculo_fecha') || '';
     document.getElementById('lecturaContainer').style.display = 'block';
     document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
     document.getElementById('lecturaCuerpo').innerHTML = `
