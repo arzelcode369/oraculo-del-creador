@@ -684,7 +684,7 @@ REGLAS ESTRICTAS:
   try {
     const res = await fetch("/api/oracle", {
   method:"POST", headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}]})
+  body:JSON.stringify({model:"claude-sonnet-4-6", max_tokens:1000, messages:[{role:"user",content:prompt}]})
 });
 
     const data = await res.json();
@@ -823,7 +823,7 @@ Español neutro LATAM. Máximo 300 palabras.`;
   try {
     const res = await fetch('/api/oracle', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:promptPost}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user',content:promptPost}]})
     });
     const data = await res.json();
     const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, 7);
