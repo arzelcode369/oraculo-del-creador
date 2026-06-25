@@ -855,18 +855,32 @@ window.addEventListener('load', async () => {
 
 async function generarLecturaPostPago(nombre) {
   const cartaAleatoria = CARTAS[Math.floor(Math.random() * CARTAS.length)];
-  const promptPost = `Eres El Oráculo del Creador. Genera una lectura profunda y completa para ${nombre}.
-Carta: ${cartaAleatoria.nombre}. Energía: ${cartaAleatoria.keywords}.
-Sigue exactamente este formato:
+  const promptPost = `Eres El Oráculo del Creador. Genera una lectura profunda y personal para ${nombre}.
+Carta revelada: ${cartaAleatoria.nombre}. Energía: ${cartaAleatoria.keywords}.
+
+INSTRUCCIONES CRÍTICAS:
+- NUNCA uses markdown: sin #, sin **, sin --, sin asteriscos, sin guiones
+- NUNCA uses emojis
+- Usa EXACTAMENTE estos marcadores de sección y nada más:
 [MENSAJE PRINCIPAL]
-3 párrafos profundos y personales dirigidos a ${nombre}.
 [LO QUE DEBES SOLTAR AHORA]
-2 párrafos sobre qué patrón soltar.
 [LA ACCIÓN SAGRADA]
-1 párrafo con acción concreta para los próximos 7 días.
 [TU AFIRMACIÓN PERSONAL]
-Una afirmación que empiece con "Yo ${nombre}..."
-Español neutro LATAM. Máximo 300 palabras.`;
+
+CONTENIDO:
+[MENSAJE PRINCIPAL]
+3 párrafos directos y personales para ${nombre}. Psicológico, específico, que sienta que lo conoces. Menciona su nombre al menos 2 veces.
+
+[LO QUE DEBES SOLTAR AHORA]
+2 párrafos sobre el patrón exacto que bloquea a ${nombre} ahora mismo.
+
+[LA ACCIÓN SAGRADA]
+1 párrafo con UNA acción concreta para los próximos 7 días. Específica, no vaga.
+
+[TU AFIRMACIÓN PERSONAL]
+Una sola afirmación que empiece exactamente con: "Yo ${nombre}..."
+
+Español neutro LATAM. Sin títulos extra. Máximo 300 palabras en total.`;
 
   try {
     const res = await fetch('/api/oracle', {
@@ -874,12 +888,9 @@ Español neutro LATAM. Máximo 300 palabras.`;
       body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user',content:promptPost}]})
     });
     const data = await res.json();
-    console.log('Claude response:', JSON.stringify(data).slice(0, 300));
     const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, 7);
-    console.log('Texto usado:', txt ? 'Claude' : 'Fallback local');
     renderizarLectura(txt, nombre);
-  } catch(err) {
-    console.error('Error generarLecturaPostPago:', err);
+  } catch {
     renderizarLectura(generarLecturaLocal(nombre, 7), nombre);
   }
 }
