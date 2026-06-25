@@ -874,9 +874,12 @@ Español neutro LATAM. Máximo 300 palabras.`;
       body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user',content:promptPost}]})
     });
     const data = await res.json();
+    console.log('Claude response:', JSON.stringify(data).slice(0, 300));
     const txt = data.content?.[0]?.text || generarLecturaLocal(nombre, 7);
+    console.log('Texto usado:', txt ? 'Claude' : 'Fallback local');
     renderizarLectura(txt, nombre);
-  } catch {
+  } catch(err) {
+    console.error('Error generarLecturaPostPago:', err);
     renderizarLectura(generarLecturaLocal(nombre, 7), nombre);
   }
 }
