@@ -1,7 +1,9 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/api/webhooks/hotmart", "dest": "/api/webhooks/hotmart.js" },
+    { "src": "/api/verificar-pago", "dest": "/api/verificar-pago.js" },
+    { "src": "/api/oracle", "dest": "/api/oracle.js" },
     { "src": "/images/(.*)", "dest": "/images/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
