@@ -434,7 +434,10 @@ for(let i=0;i<18;i++){
             <input type="date" id="inputFecha"/>
           </div>
         </div>
-        
+        <div class="input-wrap" style="margin-bottom:12px">
+          <label>Correo electrónico</label>
+          <input type="email" id="inputEmail" placeholder="el mismo que usarás en el pago"/>
+        </div>
         <button class="btn-pagar" onclick="procesarPago()">🔒 Ver la lectura completa · $4.99</button>
         <p class="garantia">✦ Pago seguro · Aparece aquí inmediatamente · Sin esperas</p>
       </div>
@@ -721,13 +724,24 @@ function mostrarForm() {
 async function procesarPago() {
   const nombre = document.getElementById('inputNombre').value.trim();
   const fecha  = document.getElementById('inputFecha').value;
-  if(!nombre || !fecha) { 
-    mostrarToast('Completa todos los campos'); 
-    return; 
+  const email  = document.getElementById('inputEmail').value.trim();
+
+  if(!nombre || !fecha || !email) {
+    mostrarToast('Completa todos los campos');
+    return;
   }
+  if(!email.includes('@')) {
+    mostrarToast('Ingresa un correo válido');
+    return;
+  }
+
+  // Guardar datos localmente para recuperarlos al volver
   localStorage.setItem('oraculo_nombre', nombre);
   localStorage.setItem('oraculo_fecha', fecha);
-  window.location.href = 'https://pay.hotmart.com/D106429733N?nome_cliente=' + encodeURIComponent(nombre);
+  localStorage.setItem('oraculo_email', email);
+
+  // Ir a Hotmart pasando el email para pre-llenarlo
+  window.location.href = 'https://pay.hotmart.com/D106429733N?checkoutMode=10&email=' + encodeURIComponent(email);
 }
 
 function generarLecturaLocal(nombre, numVida) {
@@ -785,24 +799,58 @@ function mostrarToast(msg){
   t.textContent=msg; t.classList.add('visible');
   setTimeout(()=>t.classList.remove('visible'),3000);
 }
-// Detectar retorno de hotmart
-window.addEventListener('load', () => {
+// Detectar retorno de Hotmart y verificar pago via webhook + Supabase
+window.addEventListener('load', async () => {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('pago') === 'exitoso') {
-    const nombre = params.get('nombre') 
-      || localStorage.getItem('oraculo_nombre') 
-      || 'Consultante';
-    const fecha = localStorage.getItem('oraculo_fecha') || '';
-    document.getElementById('lecturaContainer').style.display = 'block';
-    document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
-    document.getElementById('lecturaCuerpo').innerHTML = `
-      <div style="text-align:center;padding:40px;color:var(--texto-opaco)">
-        Generando tu lectura personalizada
-        <div class="puntos-carga" style="margin-top:12px"><span></span><span></span><span></span></div>
-      </div>`;
-    document.getElementById('lecturaContainer').scrollIntoView({behavior:'smooth'});
+  if (params.get('pago') !== 'exitoso') return;
+
+  const email  = localStorage.getItem('oraculo_email') || '';
+  const nombre = localStorage.getItem('oraculo_nombre') || 'Consultante';
+
+  // Mostrar sección con estado de verificación
+  const lc = document.getElementById('lecturaContainer');
+  lc.style.display = 'block';
+  document.getElementById('lecturaTitulo').textContent = `Lectura de ${nombre}`;
+  document.getElementById('lecturaCuerpo').innerHTML = `
+    <div style="text-align:center;padding:40px;color:var(--texto-opaco)">
+      <p style="margin-bottom:16px;font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.2em">Verificando tu pago...</p>
+      <div class="puntos-carga"><span></span><span></span><span></span></div>
+    </div>`;
+  lc.scrollIntoView({behavior:'smooth'});
+
+  // Si no hay email en localStorage, generar directo sin verificar
+  if (!email) {
     generarLecturaPostPago(nombre);
+    return;
   }
+
+  // Polling — preguntar a Supabase cada 2s si el webhook confirmó el pago
+  let intentos = 0;
+  const maxIntentos = 15; // 30 segundos máximo
+
+  const verificar = setInterval(async () => {
+    intentos++;
+    try {
+      const res  = await fetch('/api/verificar-pago?email=' + encodeURIComponent(email));
+      const data = await res.json();
+
+      if (data.confirmado) {
+        clearInterval(verificar);
+        const nombreConfirmado = data.nombre || nombre;
+        localStorage.setItem('oraculo_nombre', nombreConfirmado);
+        generarLecturaPostPago(nombreConfirmado);
+      } else if (intentos >= maxIntentos) {
+        // Después de 30s generar de todas formas — Hotmart puede tardar
+        clearInterval(verificar);
+        generarLecturaPostPago(nombre);
+      }
+    } catch {
+      if (intentos >= maxIntentos) {
+        clearInterval(verificar);
+        generarLecturaPostPago(nombre);
+      }
+    }
+  }, 2000);
 });
 
 async function generarLecturaPostPago(nombre) {
