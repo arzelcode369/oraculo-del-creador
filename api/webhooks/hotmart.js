@@ -25,8 +25,7 @@ export default async function handler(req, res) {
     }
 
     // Guardar en Supabase
-console.log('SUPABASE_URL:', process.env.SUPABASE_URL);
-console.log('SERVICE_KEY exists:', !!process.env.SUPABASE_SERVICE_KEY);
+
     const response = await fetch(
       `${process.env.SUPABASE_URL}/rest/v1/pagos`,
       {
